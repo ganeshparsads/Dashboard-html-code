@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<link href="db1.css" rel="stylesheet">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type = 'text/javascript'>
+function next(){
+    alert("alok");
+    $.ajax({
+  url: "http://127.0.0.1:8081/html_upload"
+})
+  .done(function( data ) {
+    if ( console && console.log ) {
+      console.log( "Sample of data:", data);
+      $("#log").html(data);
+    }
+  });
+}
+function file_submit(){
+    $.ajax({
+  url: "http://127.0.0.1:8081/file_upload"
+})
+  .done(function( data ) {
+    if ( console && console.log ) {
+      console.log( "Sample of data:", data);
+      $("#log").html(data);
+    }
+  });
+
+}
+</script>
+<script>
+$(document).ready(function(){
+    $("#sub_button").click(function(){
+        $("#resupload").html("<b>file uploaded successfully<b>");
+        alert("file uploaded successfully");
+    });
+});
+</script>
+<body>
+	<div class="upload">
+        <a class ="logo" href=""><img alt="upload.png" src="unbxd.png"></a>
+    	
+        <form action="http://127.0.0.1:8081/file_upload" method="POST" enctype="multipart/form-data">
+           <center> <input type="file" name="file" class="ifile" />
+            <input type="submit" value="Upload File" class="ifile" id="sub_button"/></center>
+        </form>
+        <div id="resupload"><b>file uploaded successfully<b></div>
+    
+    </div>
+    <div class="text" style="background-color:#fff;">
+	<div class="text_box">
+	 	<input type ="text" class="index" name = "index" size="20"/>
+		<input type ="submit" id="submit">
+    </div>
+    </div>
+    <div class="preview" style="background-color:#eee;">
+        <h2>Preview:</h2>
+        <div class="arrow">
+        <a href="arrow-left.png" style="padding-right: 5px;"><img alt="upload.png"
+        src="arrow-left.png"></a>
+        <a href="arrow-right.png"><img alt="upload.png"
+        src="arrow-right.png"></a>
+        </div>
+    	<iframe src="https://www.unbxd.com/" width=100% height="300">
+    	</iframe>
+    </div>
+    <div class="yes" >
+    	<p style="padding-right: 5px;">Do you want to assign <b>Alexa-Number</b> ?</p><button type="button">Yes</button>
+    	<button type="button">No</button>
+    </div>
+
+
+
+</body>
+</html>

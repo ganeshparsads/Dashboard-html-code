@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<link href="db1.css" rel="stylesheet">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type = 'text/javascript'>
+function next(){
+    $("#alexa").html("");
+    $("iframe").remove();
+    $.ajax({
+        url: "http://127.0.0.1:8081/next"
+    })
+        .done(function( data ) {
+            if ( console && console.log ) {
+                //console.log( "Sample of data:", data);
+
+                var iframe = document.createElement('iframe');
+                data=data.split("<-->")
+                var html = data[1];
+                iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+                iframe.height="500px";
+                iframe.width="1420px";
+                iframe.id=data[0];
+                document.body.appendChild(iframe);
+                //console.log('iframe.contentWindow =', iframe.contentWindow);
+                //$("#log").html(data);
+                }
+            });
+    }
+
+function prev(){
+    $("#alexa").html("");
+    alert("prev");
+    $("iframe").remove();
+    $.ajax({
+        url: "http://127.0.0.1:8081/prev"
+    })
+    .done(function( prev_data ) {
+    if ( console && console.log ) {
+      //console.log( "Sample of data:", data);
+
+        var iframe = document.createElement('iframe');
+        prev_data=prev_data.split("<-->")
+        var html = prev_data[1];
+        iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+        iframe.height="500px";
+        iframe.width="1420px";
+        iframe.id=prev_data[0];
+        document.body.appendChild(iframe);
+      
+      
+    }
+  });
+}
+
+</script>
+<script>
+$(document).ready(function(){
+    alert("file uploaded successfully");
+           // $("#resupload").html("<b>file uploaded successfully<b>");
+        
+    
+});
+function switchposition(){
+    $("#alexa").html("");
+    var index_value=document.getElementById("index").value;
+    $("iframe").remove();
+    $.ajax({
+        url: "http://127.0.0.1:8081/switchposition",
+        data:index_value
+    })
+    .done(function( switch_data ) {
+    if ( console && console.log ) {
+      //console.log( "Sample of data:", data);
+        switch_data=switch_data.split("<-->")
+        var iframe = document.createElement('iframe');
+        var html = switch_data[1];
+        iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+        iframe.height="500px";
+        iframe.width="1420px";
+        iframe.id=switch_data[0];
+        document.body.appendChild(iframe);
+      
+      
+    }
+  });
+}
+
+function alexarank(){
+    var iframid = document.getElementsByTagName("iframe")[0];
+    iframe_val=iframid.id;
+    //var iframeid=document.getElementById("iframeid").id;
+    //console.log(iframeid); 
+    $.ajax({
+        url: "http://127.0.0.1:8081/alexarank",
+        data:iframe_val
+    })
+    .done(function( alexarank ) {
+    if ( console && console.log ) {
+      //console.log( "Sample of data:", data);
+        //alert(alexarank);
+        $("#alexa").html("<b>ALEXA RANK:"+alexarank+"<b>");
+      
+      
+    }
+  });
+
+}
+
+</script>
+<style>    
+.container1 { 
+    top:400px;
+    overflow: auto; 
+    height: 500px; 
+    width: 500px;
+    } 
+
+element.style {
+  height: 500px;
+  width: 1425px;
+}
+</style>    
+
+<body>
+	<div class="upload">
+        <a class ="logo" href=""><img alt="upload.png" src="unbxd.png"></a>
+    	
+        <div id="resupload"></br><center><b>file uploaded successfully<b></center></div>
+    </div>
+
+    <div class="text" style="background-color:#fff;">
+        
+	    <div class="text_box">
+	 	  <input type ="text" class="index" name = "index" id="index" size="20"/>
+		  <input type ="button" onclick="switchposition()" value="submit">
+        
+    </form>
+    </div>
+    </br>
+
+
+    <center><div class="yes" >
+        <p style="padding-right: 5px;">Do you want to assign <b>Alexa-Number</b> ?</p><button type="button" onclick="alexarank()">Yes</button>
+        <button type="button">No</button>
+    </div></center>
+</br>
+</br>
+    <div class="preview1" style="background-color:#eee;">
+        <h2>Preview:</h2>
+
+        <center><div id="alexa"></div></center>
+        <div class="arrow">
+        <img alt="upload.png" src="arrow-left.png" onclick="prev();"/>
+        <img alt="upload.png" src="arrow-right.png" onclick="next();"/s>
+        </div>
+    	<!--iframe src="https://www.unbxd.com/" width=100% height="300">
+    	</iframe-->
+        
+    </div>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+</body>
+</html>

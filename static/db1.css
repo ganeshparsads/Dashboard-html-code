@@ -1,0 +1,114 @@
+.upload{
+	height: 78px;
+	
+}
+.upload .logo{
+	top: 22px;
+    position: relative;
+}
+
+
+a.upl{
+    height: 30px;
+    line-height: 30px;
+	background-color: #fff;
+	padding: 0 15px 0 15px;
+	border-radius: 22px;
+	font-size: 1.825em;
+	border: 1px solid #ccdce6;
+	color: #8694b0;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.upload a input{
+	cursor: pointer;
+	direction: ltr;
+	font-size: 200px;
+	margin: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+
+
+.text_box {
+	left: 80%;
+	position: absolute;
+	height: 39px;
+    
+
+
+}
+
+.text_box .index {
+	height: 26px;
+	width: 121px;
+}
+
+input[type=submit] {
+  background-color: #fff;
+  border-radius: 30px;
+  border: 1px solid black;
+  height: 28px;
+  width: 78px;
+  cursor: pointer;
+}
+
+input#submit:hover {
+   	background-color: red;
+}
+.preview1 {
+  top: 149px;
+  position: absolute;
+  width: 100%;
+}
+.arrow{
+    position: absolute;
+  	left: 95%;
+  	top: 34px;
+}
+.yes {
+	left    : 34%;
+	position: absolute;
+	  	
+}
+
+.yes p{
+	display:inline-block;
+}
+
+.yes button{
+	height: 21px;
+  	width: 60px;
+  	font-size: medium;
+  	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

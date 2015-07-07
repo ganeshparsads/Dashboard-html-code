@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Dashboard</title>
-	<link href="db1.css" rel="stylesheet">
+    <title>Dashboard</title>
+    <link href="db1.css" rel="stylesheet">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type = 'text/javascript'>
 function next(){
+    //debugger;
+    //document.getElementById("r").disabled = false;
+    //document.getElementById("l").disabled = false;
     $("#alexa").html("");
     $("iframe").remove();
+
+    if((document.getElementById("r").disabled ==false) || (document.getElementById("r").disabled ==undefined)){
+        //alert("s");
+        document.getElementById("r").disabled = true;
+        document.getElementById("l").disabled = true;
     $.ajax({
         url: "http://127.0.0.1:8081/next"
     })
@@ -18,22 +26,34 @@ function next(){
 
                 var iframe = document.createElement('iframe');
                 data=data.split("<-->")
-                var html = data[1];
+                var html = data[2];
                 iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
                 iframe.height="500px";
                 iframe.width="1420px";
-                iframe.id=data[0];
+                iframe.id=data[1];
+                iframe.name=data[0];
                 document.body.appendChild(iframe);
                 //console.log('iframe.contentWindow =', iframe.contentWindow);
                 //$("#log").html(data);
+                //var head= document.getElementsByTagName("head");
+                //console.log(head);
+                document.getElementById("index").value=data[0];
+                document.getElementById("r").disabled = false;
+                document.getElementById("l").disabled = false;
                 }
             });
     }
+    }
 
 function prev(){
+
     $("#alexa").html("");
-    alert("prev");
+    //alert("prev");
     $("iframe").remove();
+    if((document.getElementById("l").disabled ==false) || (document.getElementById("l").disabled ==undefined)){
+        //alert("s");
+        document.getElementById("r").disabled = true;
+        document.getElementById("l").disabled = true;
     $.ajax({
         url: "http://127.0.0.1:8081/prev"
     })
@@ -43,16 +63,17 @@ function prev(){
 
         var iframe = document.createElement('iframe');
         prev_data=prev_data.split("<-->")
-        var html = prev_data[1];
+        var html = prev_data[2];
         iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
         iframe.height="500px";
         iframe.width="1420px";
-        iframe.id=prev_data[0];
-        document.body.appendChild(iframe);
-      
-      
+        iframe.id=prev_data[1];
+        iframe.name=prev_data[0];
+        document.body.appendChild(iframe); 
+        document.getElementById("index").value=prev_data[0];
     }
   });
+}
 }
 
 </script>
@@ -63,6 +84,29 @@ $(document).ready(function(){
         
     
 });
+$(document).keydown(function(e) {
+    switch(e.which) {
+        case 37: prev();
+        break;
+
+        case 38: // up
+        break;
+
+        case 39: next();
+        break;
+
+        case 40: // down
+        break;
+
+        case 13: switchposition();
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
+
 function switchposition(){
     $("#alexa").html("");
     var index_value=document.getElementById("index").value;
@@ -76,12 +120,16 @@ function switchposition(){
       //console.log( "Sample of data:", data);
         switch_data=switch_data.split("<-->")
         var iframe = document.createElement('iframe');
-        var html = switch_data[1];
+        var html = switch_data[2];
         iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
         iframe.height="500px";
         iframe.width="1420px";
-        iframe.id=switch_data[0];
+        iframe.id=switch_data[1];
+        iframe.name=switch_data[0];
         document.body.appendChild(iframe);
+
+        //var head= document.getElementsByTagName("head");
+        //        console.log(head);
       
       
     }
@@ -90,7 +138,8 @@ function switchposition(){
 
 function alexarank(){
     var iframid = document.getElementsByTagName("iframe")[0];
-    iframe_val=iframid.id;
+    iframe_val=iframid.id+"::"+iframid.name;
+
     //var iframeid=document.getElementById("iframeid").id;
     //console.log(iframeid); 
     $.ajax({
@@ -102,6 +151,29 @@ function alexarank(){
       //console.log( "Sample of data:", data);
         //alert(alexarank);
         $("#alexa").html("<b>ALEXA RANK:"+alexarank+"<b>");
+      
+      
+    }
+  });
+
+}
+
+
+function no(){
+    var iframid = document.getElementsByTagName("iframe")[0];
+    iframe_val=iframid.id+"::"+iframid.name;
+
+    //var iframeid=document.getElementById("iframeid").id;
+    //console.log(iframeid); 
+    $.ajax({
+        url: "http://127.0.0.1:8081/no",
+        data:iframe_val
+    })
+    .done(function( alexarank ) {
+    if ( console && console.log ) {
+      //console.log( "Sample of data:", data);
+        //alert(alexarank);
+        $("#alexa").html("");
       
       
     }
@@ -125,17 +197,17 @@ element.style {
 </style>    
 
 <body>
-	<div class="upload">
+    <div class="upload">
         <a class ="logo" href=""><img alt="upload.png" src="unbxd.png"></a>
-    	
+        
         <div id="resupload"></br><center><b>file uploaded successfully<b></center></div>
     </div>
-
+   
     <div class="text" style="background-color:#fff;">
         
-	    <div class="text_box">
-	 	  <input type ="text" class="index" name = "index" id="index" size="20"/>
-		  <input type ="button" onclick="switchposition()" value="submit">
+        <div class="text_box">
+          <input type ="text" class="index" name = "index" id="index" size="20"/>
+          <input type ="button" onclick="switchposition()" value="submit">
         
     </form>
     </div>
@@ -143,9 +215,14 @@ element.style {
 
 
     <center><div class="yes" >
-        <p style="padding-right: 5px;">Do you want to assign <b>Alexa-Number</b> ?</p><button type="button" onclick="alexarank()">Yes</button>
-        <button type="button">No</button>
-    </div></center>
+        <p style="padding-right: 5px;">Is this an <b>ECOMMERCE-WEBSITE</b> ?</p><button type="button" onclick="alexarank()">Yes</button>
+        <button type="button"  onclick="no();">No</button>
+    </div>
+</center>
+ <div class="button">
+  <a href="http://127.0.0.1:8081/download"><img src="download.png"></a>
+</div>
+
 </br>
 </br>
     <div class="preview1" style="background-color:#eee;">
@@ -153,11 +230,11 @@ element.style {
 
         <center><div id="alexa"></div></center>
         <div class="arrow">
-        <img alt="upload.png" src="arrow-left.png" onclick="prev();"/>
-        <img alt="upload.png" src="arrow-right.png" onclick="next();"/s>
+        <img alt="upload.png" src="arrow-left.png" onclick="prev();" id="l"/>
+        <img alt="upload.png" src="arrow-right.png" onclick="next();" id="r"/>
         </div>
-    	<!--iframe src="https://www.unbxd.com/" width=100% height="300">
-    	</iframe-->
+        <!--iframe src="https://www.unbxd.com/" width=100% height="300">
+        </iframe-->
         
     </div>
 </br>
